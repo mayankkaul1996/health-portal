@@ -1,26 +1,21 @@
 steps:
-  - name: gcr.io/cloud-builders/docker
+  # build and push docker image
+  - name: 'gcr.io/kaniko-project/executor:latest'
     args:
-      - build
-      - '--no-cache'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
-      - .
-      - '-f'
-      - Dockerfile
-    id: Build
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - 'gcr.io/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
-    id: Push
+      - --build-arg
+      - NODE_ENV=$_NODE_ENV
+      - --cache-repo=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:latest
+      - --destination=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      - --cache=true
+      - --cache-ttl=24h
+    id: 'Docker Build and Push'
   # run cloudrun app
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
       - '-c'
       - |
        gcloud beta run deploy $_SERVICE_NAME --platform=managed \
-        --image=gcr.io/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA \
+        --image=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA \
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID \
         --region=$_DEPLOY_REGION --quiet --port=8080 --timeout=300 --min-instances=1 --max-instances=2 \
         --no-cpu-throttling --allow-unauthenticated --execution-environment=gen1 \

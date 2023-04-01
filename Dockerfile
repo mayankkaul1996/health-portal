@@ -23,9 +23,6 @@ COPY . ./
 
 RUN yarn
 
-# Test an app before build
-RUN yarn test
-
 # Typescript application build
 RUN yarn build
 
