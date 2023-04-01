@@ -14,8 +14,8 @@ class FileManager {
 
   constructor(cloudProvider: CloudProvider) {
     if (cloudProvider === CloudProvider.GCP) {
+        this.cloudStorage = new GcpStorage({});
         const storageConfig = GCPStorageConfig();
-        this.cloudStorage = new GcpStorage(storageConfig);
         this.bucketName = storageConfig.mediaBucket;
     } 
   }
