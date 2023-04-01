@@ -18,7 +18,7 @@ steps:
         --image=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA \
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID \
         --region=$_DEPLOY_REGION --quiet --port=8080 --timeout=300 --min-instances=1 --max-instances=2 \
-        --memory=2Gi --cpu=2 --no-cpu-throttling --allow-unauthenticated --execution-environment=gen1 \
+        --no-cpu-throttling --allow-unauthenticated --execution-environment=gen1 \
         --set-env-vars NODE_ENV=$_NODE_ENV \
         --set-env-vars GCP_PROJECT_ID=$_GCP_PROJECT_ID \
         --set-env-vars GCP_PRIVATE_KEY=$$GCP_PRIVATE_KEY \
