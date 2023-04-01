@@ -21,7 +21,6 @@ steps:
         --no-cpu-throttling --allow-unauthenticated --execution-environment=gen1 \
         --set-env-vars NODE_ENV=$_NODE_ENV \
         --set-env-vars GCP_PROJECT_ID=$_GCP_PROJECT_ID \
-        --set-env-vars GCP_PRIVATE_KEY=$$GCP_PRIVATE_KEY \
         --set-env-vars GCP_CLIENT_EMAIL=$_GCP_CLIENT_EMAIL \
         --set-env-vars LOCKER_DOCUMENT_BUCKET=$_LOCKER_DOCUMENT_BUCKET \
         --set-env-vars MONGO_URI=$$MONGO_URI \
@@ -31,8 +30,6 @@ options:
   secretEnv: ['GCP_PRIVATE_KEY', 'MONGO_URI']    
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/GCP_PRIVATE_KEY/versions/latest
-    env: GCP_PRIVATE_KEY
   - versionName: projects/$PROJECT_ID/secrets/MONGO_URI/versions/latest
     env: MONGO_URI
 timeout: 1000s

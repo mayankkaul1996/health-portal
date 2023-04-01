@@ -14,7 +14,6 @@ interface DatabaseConfig {
 };
 interface GCPConfig {
 	project_id: string;
-	private_key: string;
 	client_email: string;
 	storage: {
 		locker_document_bucket: string;
@@ -73,7 +72,6 @@ export default (): AppConfig => {
 		gcpConfig: {
 			project_id: GCP_PROJECT_ID,
 			client_email: GCP_CLIENT_EMAIL,
-			private_key: GCP_PRIVATE_KEY,
 			storage: {
 				locker_document_bucket: LOCKER_DOCUMENT_BUCKET
 			}
