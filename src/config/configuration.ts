@@ -50,7 +50,6 @@ export default (): AppConfig => {
 			COOKIE_DOMAIN,
 			LOCKER_DOCUMENT_BUCKET,
 			GCP_CLIENT_EMAIL,
-			GCP_PRIVATE_KEY,
 			MONGO_URI
 		}
 	} = process;

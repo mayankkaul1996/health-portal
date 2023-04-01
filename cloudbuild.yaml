@@ -27,7 +27,7 @@ steps:
     id: 'Cloud Run Deploy'
     entrypoint: bash
 options:
-  secretEnv: ['GCP_PRIVATE_KEY', 'MONGO_URI']    
+  secretEnv: ['MONGO_URI']    
 availableSecrets:
   secretManager:
   - versionName: projects/$PROJECT_ID/secrets/MONGO_URI/versions/latest
