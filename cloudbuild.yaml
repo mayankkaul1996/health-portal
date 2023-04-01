@@ -1,6 +1,6 @@
 steps:
   # build and push docker image
-  - name: 'gcr.io/kaniko-project/executor:latest'
+  - name: 'gcr.io/kaniko-project/executor:v1.6.0'
     args:
       - --build-arg
       - NODE_ENV=$_NODE_ENV
