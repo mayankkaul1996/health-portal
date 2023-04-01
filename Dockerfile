@@ -1,4 +1,7 @@
-FROM node:14.17.4-alpine
+
+# Use the official lightweight Node.js 14 image.
+# https://hub.docker.com/_/node
+FROM node:14-slim
 
 RUN apk add --no-cache bash
 RUN mkdir -p /usr/src/app
