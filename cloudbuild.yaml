@@ -1,12 +1,12 @@
 steps:
   # build and push docker image
-  - name: 'gcr.io/kaniko-project/executor:v1.6.0-debug'
+  - name: 'gcr.io/kaniko-project/executor:latest'
     args:
       - --build-arg
       - NODE_ENV=$_NODE_ENV
       - --cache-repo=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:latest
       - --destination=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
-      - --cache=true
+      # - --cache=true
       - --cache-ttl=24h
     id: 'Docker Build and Push'
   # run cloudrun app
