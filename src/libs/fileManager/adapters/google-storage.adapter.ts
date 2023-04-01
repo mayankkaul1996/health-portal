@@ -1,18 +1,11 @@
 import { Storage } from '@google-cloud/storage';
-import { GCPConfig } from './google-storage.config';
 import { CloudStorage } from "./type";
 
 export class GcpStorage implements CloudStorage {
   private gcpStorage: Storage;
 
-  constructor({ clientEmail, privateKey, projectId }: GCPConfig) {
-    this.gcpStorage = new Storage({
-      projectId: projectId,
-      credentials: {
-        client_email: clientEmail,
-        private_key: privateKey,
-      },
-    });
+  constructor({ clientEmail, privateKey, projectId }: any) {
+    this.gcpStorage = new Storage();
   }
 
   async listFiles(bucketName: string, prefix: string): Promise<string[]> {
