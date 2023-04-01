@@ -3,9 +3,7 @@
 # https://hub.docker.com/_/node
 FROM node:14-slim
 
-RUN apk add --no-cache bash
-RUN mkdir -p /usr/src/app
-
+# Create and change to the app directory.
 WORKDIR /usr/src/app
 
 # TODO: add other args and envs
@@ -14,6 +12,7 @@ ARG NODE_ENV
 
 # Set env var
 ENV NODE_ENV=$NODE_ENV
+
 ARG PROJECT_ID
 ENV PROJECT_ID=$PROJECT_ID
 
