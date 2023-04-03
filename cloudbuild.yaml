@@ -24,6 +24,8 @@ steps:
         --set-env-vars GCP_CLIENT_EMAIL=$_GCP_CLIENT_EMAIL \
         --set-env-vars LOCKER_DOCUMENT_BUCKET=$_LOCKER_DOCUMENT_BUCKET \
         --set-env-vars MONGO_URI=$$MONGO_URI \
+        --set-env-vars MONGO_DB_NAME=$$MONGO_DB_NAME \
+        --set-env-vars GLOBAL_FILE_MANAGER_CLOUD_PROVER=$$GLOBAL_FILE_MANAGER_CLOUD_PROVER \
     id: 'Cloud Run Deploy'
     entrypoint: bash
 options:
