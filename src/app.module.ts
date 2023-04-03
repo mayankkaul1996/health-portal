@@ -9,7 +9,7 @@ import { MongooseConfigService } from './libs/database/mongoose.connection';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [Configuration], isGlobal: true }),
+    ConfigModule.forRoot({ load: [Configuration] }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useClass: MongooseConfigService, 

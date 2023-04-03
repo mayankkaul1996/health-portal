@@ -38,7 +38,6 @@ class Application {
 		this.app.enableVersioning({
 			type: VersioningType.URI,
 		});
-		this.app.enableCors({ origin: ['http://localhost:8081'] });
 		this.app.set('trust proxy', 1);
 		this.app.use(APILogger);
 		this.app.useGlobalFilters(new HttpExceptionFilter());

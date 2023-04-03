@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import FileManager, { CloudProvider } from 'src/libs/fileManager';
+import FileManagerService from 'src/libs/fileManager/fileManager.service';
 import { ILogger, Logger } from '../../libs/logging/logger';
 import { Locker, LockerDocument } from './schemas/locker.schema';
 
@@ -26,12 +26,13 @@ export class LockerService {
   private readonly logger: ILogger = Logger.getLogger();
 
   constructor(
-    @InjectModel(Locker.name) private lockerModel: Model<LockerDocument>
+    @InjectModel(Locker.name) private lockerModel: Model<LockerDocument>,
+    private readonly FileManager: FileManagerService
   ) { }
 
   async uploadDocument({ filePath, media, metadata, fileName, title, mimetype }: TUploadDocument) {
     await new this.lockerModel({ name: fileName, path: filePath, user: 'Mayank kaul', title: title, mimetype }).save();
-    await new FileManager(CloudProvider.GCP).uploadFile(filePath, media, metadata, fileName);
+    await this.FileManager.uploadFile(filePath, media, metadata, fileName);
   }
 
   async getDocuments({ user, searchTerm, lastSeenId, pageSize, sortField, sortType }): Promise<TDocument[]> {
@@ -47,7 +48,7 @@ export class LockerService {
       .sort({ [sortField || 'createdAt']: sortType || -1 })
       .exec();
 
-    //change this implementation where we dont hard code
+    //change this implementation where we dont hard code base strings
     return documents.map(document => ({
       _id: document._id.toString(),
       title: document.title,

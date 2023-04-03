@@ -1,5 +1,5 @@
 import { Storage } from '@google-cloud/storage';
-import { CloudStorage } from "./type";
+import { CloudStorage } from "../fileManager.type";
 
 export class GcpStorage implements CloudStorage {
   private gcpStorage: Storage;

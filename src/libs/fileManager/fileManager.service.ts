@@ -1,22 +1,16 @@
 import { GcpStorage } from "./adapters/google-storage.adapter";
-import { CloudStorage } from "./adapters/type";
-import GCPStorageConfig from "./adapters/google-storage.config";
+import { CloudProvider, CloudStorage, FileManagerConfigOptions, IFileManagerConfig,  } from "./fileManager.type";
+import { Inject, Injectable } from "@nestjs/common";
 
-export enum CloudProvider  {
-  GCP = 'GCP',
-  AWS = 'AWS'
-}
-
-class FileManager {
+@Injectable()
+class FileManagerService {
   private cloudStorage: CloudStorage;
-//   private configService: ConfigService;
   private bucketName: string;
 
-  constructor(cloudProvider: CloudProvider) {
-    if (cloudProvider === CloudProvider.GCP) {
+  constructor(@Inject(FileManagerConfigOptions) private readonly config: IFileManagerConfig) {
+    if (config.cloudProvider === CloudProvider.GCP) {
         this.cloudStorage = new GcpStorage({});
-        const storageConfig = GCPStorageConfig();
-        this.bucketName = storageConfig.mediaBucket;
+        this.bucketName = config.mediaBucket;
     } 
   }
 
@@ -33,7 +27,7 @@ class FileManager {
   }
 
   async uploadFile(filePath: string, media: Buffer, metadata: { [key: string]: string }[], fileName: string, bucketName: string = this.bucketName): Promise<void> {
-    return this.cloudStorage.uploadFile(this.bucketName, filePath, media, fileName, metadata);
+    return this.cloudStorage.uploadFile(bucketName, filePath, media, fileName, metadata);
   }
 
   async deleteFile(fileName: string, bucketName: string = this.bucketName): Promise<void> {
@@ -41,4 +35,4 @@ class FileManager {
   }
 }
 
-export default FileManager;
+export default FileManagerService;

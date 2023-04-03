@@ -52,14 +52,14 @@ export class GetDocumentsDto {
         name: 'sortField',
         description: 'The attribute to sort by',
         type: String,
-        example: 'conversation.updated_at'
+        example: 'updated_at'
     })
     @IsOptional()
     readonly sortField: String;
 
     @ApiProperty({
         name: 'sortType',
-        description: 'Sort 1|-1',
+        description: 'Sort 1 | -1',
         type: Number,
         example: -1
     })
