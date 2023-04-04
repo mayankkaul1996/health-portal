@@ -11,7 +11,8 @@ type TUploadDocument = {
   metadata: { [key: string]: string }[],
   fileName: string,
   title: string,
-  mimetype: string
+  mimetype: string,
+  userId: string
 };
 
 type TDocument = {
@@ -30,8 +31,8 @@ export class LockerService {
     private readonly FileManager: FileManagerService
   ) { }
 
-  async uploadDocument({ filePath, media, metadata, fileName, title, mimetype }: TUploadDocument) {
-    await new this.lockerModel({ name: fileName, path: filePath, user: 'Mayank kaul', title: title, mimetype }).save();
+  async uploadDocument({ filePath, media, metadata, fileName, title, mimetype, userId }: TUploadDocument) {
+    await new this.lockerModel({ name: fileName, path: filePath, user: userId, title: title, mimetype }).save();
     await this.FileManager.uploadFile(filePath, media, metadata, fileName);
   }
 

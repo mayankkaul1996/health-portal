@@ -30,13 +30,18 @@ interface FileManager {
 	};
 }
 
+interface GoogleConfig {
+	clientId: string;
+};
+
 interface AppConfig {
 	port: number;
 	database: DatabaseConfig;
 	gcpConfig: GCPConfig;
-	jwt_secret: string;
+	jwtSecret: string;
 	security: Security;
 	fileManager: FileManager;
+	google: GoogleConfig;
 };
 
 export default (): AppConfig => {
@@ -58,7 +63,8 @@ export default (): AppConfig => {
 			GCP_CLIENT_EMAIL,
 			MONGO_URI,
 			MONGO_DB_NAME,
-			GLOBAL_FILE_MANAGER_CLOUD_PROVER
+			GLOBAL_FILE_MANAGER_CLOUD_PROVER,
+			GOOGLE_CLIENT_ID
 		}
 	} = process;
 	return {
@@ -81,7 +87,7 @@ export default (): AppConfig => {
 			project_id: GCP_PROJECT_ID,
 			client_email: GCP_CLIENT_EMAIL,
 		},
-		jwt_secret: JWT_SECRET,
+		jwtSecret: JWT_SECRET,
 		security: {
 			allowed_origins: ALLOWED_ORIGINS,
 			cookie_domain: COOKIE_DOMAIN,
@@ -92,6 +98,9 @@ export default (): AppConfig => {
 			storage: {
 				locker_document_bucket: LOCKER_DOCUMENT_BUCKET
 			}
+		},
+		google: {
+			clientId: GOOGLE_CLIENT_ID
 		}
 	};
 };

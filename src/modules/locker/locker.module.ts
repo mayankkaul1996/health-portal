@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileManagerModule } from 'src/libs/fileManager/fileManager.module';
+import { AuthModule } from '../auth/auth.module';
+import { UserModule } from '../user/user.module';
 import { LockerController } from './locker.controller';
 import { LockerService } from './locker.service';
 import { Locker, LockerSchema } from './schemas/locker.schema';
@@ -17,6 +19,8 @@ import { Locker, LockerSchema } from './schemas/locker.schema';
                 mediaBucket: configService.get('fileManager.storage.locker_document_bucket')
             }),
         }),
+        AuthModule,
+        UserModule
     ],
     controllers: [LockerController],
     providers: [LockerService],

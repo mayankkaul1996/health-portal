@@ -6,6 +6,8 @@ import { LockerModule } from './modules/locker/locker.module';
 import Configuration from 'src/config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongooseConfigService } from './libs/database/mongoose.connection';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { MongooseConfigService } from './libs/database/mongoose.connection';
       inject: [ConfigService]
     }),
     LockerModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
