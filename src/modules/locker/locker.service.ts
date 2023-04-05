@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import FileManagerService from 'src/libs/fileManager/fileManager.service';
+import { Readable } from 'stream';
 import { ILogger, Logger } from '../../libs/logging/logger';
 import { Locker, LockerDocument } from './schemas/locker.schema';
 
@@ -57,6 +58,11 @@ export class LockerService {
       createdAt: document.createdAt,
       mimetype: document.mimetype
     }));
+  }
+
+  async getDocument(fileName: string): Promise<Readable> {
+    const readStream = await this.FileManager.downloadFileAsStream(fileName);
+    return readStream;
   }
 
 }

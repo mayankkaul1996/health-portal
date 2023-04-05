@@ -1,6 +1,7 @@
 import { GcpStorage } from "./adapters/google-storage.adapter";
 import { CloudProvider, CloudStorage, FileManagerConfigOptions, IFileManagerConfig,  } from "./fileManager.type";
 import { Inject, Injectable } from "@nestjs/common";
+import { Readable } from "stream";
 
 @Injectable()
 class FileManagerService {
@@ -32,6 +33,10 @@ class FileManagerService {
 
   async deleteFile(fileName: string, bucketName: string = this.bucketName): Promise<void> {
     return this.cloudStorage.deleteFile(bucketName, fileName);
+  }
+
+  async downloadFileAsStream(filePath: string, bucketName: string = this.bucketName): Promise<Readable> {
+    return this.cloudStorage.downloadFileAsStream(bucketName, filePath);
   }
 }
 

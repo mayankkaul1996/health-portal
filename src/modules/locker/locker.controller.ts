@@ -2,8 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
+  SetMetadata,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -12,11 +15,12 @@ import {
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ResponseInterceptor } from "src/libs/core/response.interceptor";
 import { ILogger, Logger } from "src/libs/logging/logger";
-import { JWTGuard } from "../auth/jwt.guard";
+import { JWTGuard } from "../auth/jwt.guard"; 
 import { GetUser } from "../auth/user.decorator";
 import { UserDocument } from "../user/schemas/user.schema";
 import { GetDocumentsDto, UploadToLockerDto } from "./dto/locker.dto";
 import { LockerService } from "./locker.service";
+
 
 @Controller('locker')
 @UseGuards(JWTGuard)
@@ -24,7 +28,7 @@ import { LockerService } from "./locker.service";
 export class LockerController {
   constructor(private readonly lockerService: LockerService) { }
   private readonly logger: ILogger = Logger.getLogger();
-  
+
   @Post('upload')
   @Version('1')
   @UseInterceptors(FileInterceptor('file', {
@@ -35,14 +39,15 @@ export class LockerController {
   }))
   async uploadFile(@GetUser() user: UserDocument, @UploadedFile() file: Express.Multer.File, @Body() { title }: UploadToLockerDto) {
     this.logger.info(`[src][modules][locker][controller][uploadFile][start] title :- ${title}`);
+    const userId = user._id.toString();
     await this.lockerService.uploadDocument({
       title: title,
-      filePath: `locker/${title}`,
+      filePath: `locker/${userId}/${file.originalname}`,
       media: file.buffer,
       fileName: file.originalname,
       metadata: [{ mediaId: title }],
       mimetype: file.mimetype,
-      userId: user._id.toString()
+      userId: userId
     });
     return { title };
   }
@@ -53,5 +58,14 @@ export class LockerController {
     this.logger.info(`[src][modules][locker][controller][getDocuments][start]`);
     return await this.lockerService.getDocuments({ user: user._id.toString(), searchTerm, lastSeenId, pageSize, sortField, sortType });
   }
-  
+
+  @Get('document/:fileName')
+  @Version('1')
+  @SetMetadata('stream', true)
+  async getDocumentBuffer(@Param('fileName') fileName: string) {
+    this.logger.info(`[src][modules][locker][controller][getDocumentBuffer][start]`);
+    const readStream = await this.lockerService.getDocument(fileName);
+    return new StreamableFile(readStream);
+  }
+
 }

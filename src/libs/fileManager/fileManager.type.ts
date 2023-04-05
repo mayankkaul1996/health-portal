@@ -1,4 +1,5 @@
 import { FactoryProvider, ModuleMetadata } from "@nestjs/common";
+import { Readable } from "stream";
 
 export interface CloudStorage {
   listFiles(bucketName: string, prefix: string): Promise<string[]>;
@@ -11,6 +12,7 @@ export interface CloudStorage {
     metadata: { [key: string]: string }[],
   ): Promise<void>;
   deleteFile(bucketName: string, fileName: string): Promise<void>;
+  downloadFileAsStream(bucketName: string, fileName: string): Promise<Readable>
 }
 
 export enum CloudProvider  {

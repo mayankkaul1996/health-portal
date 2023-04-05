@@ -1,4 +1,5 @@
 import { Storage } from '@google-cloud/storage';
+import { Readable } from 'stream';
 import { CloudStorage } from "../fileManager.type";
 
 export class GcpStorage implements CloudStorage {
@@ -35,5 +36,10 @@ export class GcpStorage implements CloudStorage {
   async deleteFile(bucketName: string, fileName: string): Promise<void> {
     const file = this.gcpStorage.bucket(bucketName).file(fileName);
     await file.delete();
+  }
+
+  async downloadFileAsStream(bucketName: string, filePath: string): Promise<Readable> {
+    const file = this.gcpStorage.bucket(bucketName).file(filePath);;
+    return file.createReadStream();
   }
 }
